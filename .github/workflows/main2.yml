@@ -1,16 +1,19 @@
-name: Jobs on selfhosted runner 
+name: CI/CD workflow 
 on:
   push:
-    branches:
-      - main 
+   branches:
+     - master
 jobs:
-  reviewJob:
-   runs-on: self-hosted
-   steps:
-    - name: review the code 
-      run: echo "review the code"
-  buildJob:
-   runs-on: self-hosted
-   steps:
-    - name: build the code 
-      run: echo "Build the code"
+  buildandDeploy:
+    runs-on: ubuntu-latest
+    steps:
+     - name: Clone the code
+       uses: actions/checkout@v4
+     - name: Download Java and Maven
+       uses: actions/setup-java@v4
+       with: 
+        distribution: 'temurin'
+        java-version: '11'
+        cache: 'maven'
+     - name: Build the code 
+       run: mvn package
